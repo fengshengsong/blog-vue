@@ -53,7 +53,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @media screen and (max-width: 1000px){
 	#headerarea{
 		display: block !important;
@@ -82,7 +82,7 @@ export default {
 	padding: .5em;
 	right: 1em;
 	top: 1em;
-	background-color: gray;
+	background-color: #333;
 }
 .head-nav{
 	/*display: none;*/
@@ -96,7 +96,7 @@ export default {
 .head-menu a{
 	color: white;
 }
-.iconfont{
+.head-menu a i{
 	margin-right: 1em;
 	color: white;
 }

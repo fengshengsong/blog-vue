@@ -55,6 +55,7 @@ export default {
     }
 }
 #container {
+    position: absolute;
     width: 70vw;
     min-height: 100%;
     box-sizing: border-box;
