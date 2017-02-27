@@ -47,8 +47,14 @@ export default {
 </script>
 
 <style scoped>
+@media screen and (max-width: 1000px){
+    #container{
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
 #container {
-    position: absolute;
     width: 70vw;
     min-height: 100%;
     box-sizing: border-box;

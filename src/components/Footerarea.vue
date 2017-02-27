@@ -2,9 +2,9 @@
     <div id="footerarea" :transition="footer_trans">
    		<p>
    			版权是我的
-   			<a href="" @click="onThumb"><i class="fa fa-thumbs-o-up left-thumb"></i></a>
+   			<a href="" @click.stop.prevent="onThumb"><i class="fa fa-thumbs-o-up left-thumb"></i></a>
    			fengshengsong
-   			<a href="" @click="onThumb"><i class="fa fa-thumbs-o-up right-thumb"></i></a>
+   			<a href="" @click.stop.prevent="onThumb"><i class="fa fa-thumbs-o-up right-thumb"></i></a>
    			{{new Date().getFullYear()}}
    		</p>
     </div>
@@ -35,6 +35,11 @@ export default {
 {
 	from {top: 0em;}
 	to {top: -1em;}
+}
+@media screen and (max-width: 1000px){
+    #footerarea{
+    	display: none;
+    }
 }
 #footerarea{
     width: 100%;

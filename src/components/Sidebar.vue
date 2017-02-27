@@ -159,6 +159,12 @@ export default {
 </script>
 
 <style scoped>
+
+@media screen and (max-width: 1000px){
+	#sidebar{
+		display: none;
+	}
+}
 #sidebar{
 	position: fixed;
 	width: 15vw; 

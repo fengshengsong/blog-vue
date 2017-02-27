@@ -1,107 +1,128 @@
 <template>
-    <div id="headerarea" v-if="is_headerarea_show" :transition="header_trans">
-<!--         <div class="headerarea-simple" 
-        :class="{'headerarea-simple-hide':!is_simple_headerarea_show,'headerarea-simple-show':is_simple_headerarea_show}">
-            <span class="headerarea-hide-btn" @click="hideSimpleHeaderarea">
-                <i class="iconfont headerarea-hide-icon" >&#xe607;</i>
-            </span>
-        </div> -->
-    </div>
+	<div id="headerarea">
+		<div class="head-title" v-text="head_title"></div>
+		<div class="head-nav-btn" @click="toggleHeadnav" v-text="head_txt"></div>
+		<div class="head-nav" v-show="is_headnav_show" transition="expand">
+			<ul class="head-menus">
+				<li v-for="menu in menus" class="head-menu" 
+				:class="{'current-menu':(current_menu==$index)}" @click="menuClick(menu.event,$index)">
+				<a href="javascript:;"><i class="iconfont" v-html="menu.iconfont"></i>{{menu.name}}</a>
+			</li>
+		</ul>
+	</div>
+</div>
 </template>
 
 <script>
-import { getSimpleHeaderareaShow,getHeaderareaShow } from '../vuex/getters'
-import { hideSimpleHeaderarea,showHeaderarea,showMainbody } from '../vuex/actions'
-
 export default {
-    vuex:{
-        getters:{
-            is_simple_headerarea_show:getSimpleHeaderareaShow,
-            is_headerarea_show:getHeaderareaShow,
-        },
-        actions:{
-            hideSimpleHeaderarea,
-            showHeaderarea,
-            showMainbody,
-        }
-    },
-    transitions:{
-        headerMove:{
-            afterEnter(el){
-                this.showMainbody()
-            }
-        }
-    },
-    data(){
-        return {
-            header_trans:'headerMove',
-        }
-    },
-    ready(){
-        let that =this
-        setTimeout(function(){
-            that.showHeaderarea()
-        },10)
-    },
-    methods:{
-    }
+	data(){
+		return {
+			is_headnav_show:false,
+			head_title:'小银的博客',
+			menus:[],
+			current_menu:Number(window.localStorage.getItem('current_menu'))||0,
+		}
+	},
+	ready(){
+		let menus = [
+			{name:'博客',iconfont:'&#xe61e;',event:'blog'},
+			{name:'标签',iconfont:'&#xe6f9;',event:'tag'},
+			{name:'测试',iconfont:'&#xe616;',event:'test'},
+			{name:'搜索',iconfont:'&#xe615;',event:'search'},
+		]
+		this.$set('menus',menus)
+	},
+	computed:{
+		head_txt(){
+			return this.is_headnav_show ? '上' : '下'
+		}
+	},
+	methods:{
+		menuClick(event,index){
+			this.$route.router.go({path:'/'+event})
+			this.setCurrentMenu(index)
+		},
+		setCurrentMenu(index){
+			window.localStorage.setItem('current_menu',index)
+			this.current_menu=index
+		},
+		toggleHeadnav(){
+			this.is_headnav_show = !this.is_headnav_show
+		}
+	},
 }
 </script>
 
 <style>
+@media screen and (max-width: 1000px){
+	#headerarea{
+		display: block !important;
+	}
+}
 #headerarea{
-    width: 70vw;
-    background: white;
+	display: none;
+	width: 100%;
+	background-color: #333;
 }
 #headerarea a:hover{
-    text-decoration: none;
+	text-decoration: none;
 }
-.headerarea-simple{
-    position: relative;
-    height: 2em;
-    background: #333;
-    width: 70vw;
-    position: fixed;
-    left: 15vw;
-    transition: all .5s;
-    z-index: 999;
+.head-title{
+	width: 100%;
+	color: white;
+	padding: 1em 0;
+	font-size: 1.5em;
+	text-align: center;
 }
-.headerarea-simple-hide{
-    top: -2em;
+.head-nav-btn{
+	position: absolute;
+	color: white;
+	font-size: 1.1em;
+	text-align: center;
+	padding: .5em;
+	right: 1em;
+	top: 1em;
+	background-color: gray;
 }
-.headerarea-simple-show{
-    top: 0;
+.head-nav{
+	/*display: none;*/
+	transition: all 1s;
+	background-color: #333;
 }
-.headerarea-hide-btn{
-    display: inline-block;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 2em;
-    cursor: pointer;
+.head-menu{
+	padding: 1em;
+	position: relative;
 }
-.headerarea-hide-icon{
-    font-size: 1.5em;
-    color: gray;
-    position: absolute;
-    right: .2em;
-    top: .1em;
-    transition: color .5s;
+.head-menu a{
+	color: white;
 }
-.headerarea-hide-icon:hover{
-    color: white;
+.iconfont{
+	margin-right: 1em;
+	color: white;
 }
-.headerMove-transition {
-    position: relative;
-    transition: all .5s ease;
-    top: 0;
-    opacity: 1;
+.current-menu::after{
+	content: " ";
+	position: absolute;
+	top: 50%;
+	margin-top: -3px;
+	right: 15px;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background-color:white;
+	opacity: .6;
 }
-.headerMove-enter {
-    top: -100px;
-    opacity: 0;
+.expand-transition {
+	position: relative;
+	transition: all 1s ease;
+	height: 14em;
+	opacity: 1;
+	top: 0;
 }
-.headerMove-leave {
+.expand-enter, .expand-leave {
+	height: 0;
+	/*top: -100px;*/
+
+	opacity: 0;
 }
 </style>

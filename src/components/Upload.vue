@@ -123,6 +123,11 @@ export default {
 </script>
 
 <style scoped>
+@media screen and (max-width: 1000px){
+    #upload{
+        display: none;
+    }
+}
 .uploadMove-transition{
     transform: scale(100%);
 }

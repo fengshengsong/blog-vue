@@ -60,6 +60,11 @@ export default{
 </script>
 
 <style scoped>
+@media screen and (max-width: 1000px){
+    #message{
+        display: none;
+    }
+}
 #message{
     background: white;
     position: fixed;

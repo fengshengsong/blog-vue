@@ -51,43 +51,48 @@ export default {
 </script>
 
 <style scoped>
+@media screen and (max-width: 1000px){
 	#navbar{
-		width: 100%;
-		height: 2em;
+		display: none;
 	}
-	.navbarMove-transition {
-		position: relative;
-		transition: left .5s ease;
-		left: 0;
-		top: 0;
-	}
-	.navbarMove-enter {
-		left: -100%;
-	}
-	.navbarMove-leave{
-		top: -100%;
-	}
+}
+#navbar{
+	width: 100%;
+	height: 2em;
+}
+.navbarMove-transition {
+	position: relative;
+	transition: left .5s ease;
+	left: 0;
+	top: 0;
+}
+.navbarMove-enter {
+	left: -100%;
+}
+.navbarMove-leave{
+	top: -100%;
+}
 
-	#navlist{
-		background: transparent;
-	}
-	#navlist li{
-		display: inline-block;
-	}
-	#navlist a{
-		display: inherit;
-		color: black;
-		text-decoration: none;
-		text-align: center;
-		vertical-align: middle;
-		width: 5em;
-		height: 2em;
-		line-height: 2em;
-		transition: all .2s;
-	}
-	#navlist a:hover, .current-cate>a{
-		text-decoration: none;
-		background: #555; 
-		color: white !important;
-	}
+#navlist{
+	background: transparent;
+}
+#navlist li{
+	display: inline-block;
+}
+#navlist a{
+	display: inherit;
+	color: black;
+	text-decoration: none;
+	text-align: center;
+	vertical-align: middle;
+	width: 5em;
+	height: 2em;
+	line-height: 2em;
+	transition: all .2s;
+}
+#navlist a:hover, .current-cate>a{
+	text-decoration: none;
+	background: #555; 
+	color: white !important;
+}
 </style>
