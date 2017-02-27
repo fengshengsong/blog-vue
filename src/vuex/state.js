@@ -1,10 +1,9 @@
 //放置初始状态
 import SHARES from '../static/javascripts/SHARES.js'
 
-export default {
+export default {	
 	is_admin:false,
 	is_visitor:false,
-	is_blured:false,
 	
 	message:'',
 	

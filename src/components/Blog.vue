@@ -1,26 +1,21 @@
 <template>
 	<div id="blog">
 		<navbar></navbar>
-		<content></content>
+		<div id="blog-content">
+			<router-view></router-view>			
+		</div>
 	</div>
 </template>
 
 <script>
 import Navbar from './Navbar'
-import Content from './Content'
 
 export default {
 	components:{
-		Navbar,Content
+		Navbar
 	},
-	ready(){
-		// this.$route.router.go({path:'/blog/all'})
-	}
 }
 </script>
 
 <style>
-#blog{
-
-}
 </style>

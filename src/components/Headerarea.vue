@@ -1,5 +1,5 @@
 <template>
-    <div id="headerarea" class="yahei-font" v-if="is_headerarea_show" :transition="header_trans">
+    <div id="headerarea" v-if="is_headerarea_show" :transition="header_trans">
 <!--         <div class="headerarea-simple" 
         :class="{'headerarea-simple-hide':!is_simple_headerarea_show,'headerarea-simple-show':is_simple_headerarea_show}">
             <span class="headerarea-hide-btn" @click="hideSimpleHeaderarea">

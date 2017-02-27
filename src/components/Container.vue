@@ -1,5 +1,5 @@
 <template>
-    <div id="container" class="flex-column">
+    <div id="container">
         <headerarea></headerarea>
         <mainbody></mainbody>
         <footerarea></footerarea>
@@ -13,19 +13,14 @@ import Mainbody from './Mainbody'
 import Upload from './Upload'
 import Footerarea from './Footerarea'
 
-import { getSHARES } from '../vuex/getters'
-import { toggleHeaderarea,toggleTotop } from '../vuex/actions'
+import { toggleTotop } from '../vuex/actions'
 
 export default {
     components: {
         Headerarea, Mainbody, Upload, Footerarea
     },
     vuex:{
-        getters:{
-            SHARES:getSHARES,
-        },
         actions:{
-            toggleHeaderarea,
             toggleTotop,
         }
     },
@@ -45,7 +40,6 @@ export default {
     },
     methods:{
         scrollTopChange(newVal,oldVal){
-            this.toggleHeaderarea(newVal)
             this.toggleTotop(newVal)
         }
     }
@@ -60,5 +54,10 @@ export default {
     box-sizing: border-box;
     margin-left: 15vw; 
     overflow-x: hidden;
+
+    display: flex;
+    flex-flow: column nowrap;  
+    justify-content:flex-start;
+    align-items:flex-start;
 }
 </style>

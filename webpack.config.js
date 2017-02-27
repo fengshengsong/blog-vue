@@ -30,7 +30,7 @@ var config = {
             },
             { test: /\.scss$/, loader: 'style!css!sass'},
             { test: /\.html$/, loader: 'html'},
-            { test: /\.(png|gif|jpe?g|svg)$/i, loader: 'url?limit=10000'},
+            { test: /\.(png|gif|jpg|svg)$/i, loader: 'url?limit=10000'},
             { test: /\.json$/, loader: 'json'},
             { test: /\.vue$/, loader: 'vue'}
         ]

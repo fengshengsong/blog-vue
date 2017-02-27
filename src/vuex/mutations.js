@@ -13,12 +13,6 @@ export default {
 	HIDE_UPLOAD(state){
 		state.is_upload_show = false
 	},
-	ADD_BLURED(state){
-		state.is_blured = true
-	},
-	REMOVE_BLURED(state){
-		state.is_blured = false
-	},
 	LOGIN_AS_ADMIN(state){
 		state.is_admin = true
 	},

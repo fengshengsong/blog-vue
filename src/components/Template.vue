@@ -1,10 +1,10 @@
 <template>
-  	<div class="templ yahei-font" v-html="essay"></div>
+  	<div class="templ" v-html="essay"></div>
 </template>
 
 <script>
-import { showMessage } from '../../vuex/actions'
-import { getSHARES } from '../../vuex/getters'
+import { showMessage } from '../vuex/actions'
+import { getSHARES } from '../vuex/getters'
 
 export default {
     vuex: {

@@ -1,9 +1,9 @@
 <template>
-    <div id="message" class="yahei-font aaa-five-border" v-show="isMessageShow" :transition="messageTranstion"
+    <div id="message" class="" v-show="isMessageShow" :transition="messageTranstion"
     @mouseover="messageMouseover" @mouseout="messageMouseout">
         <h3>消息</h3>
-        <p>{{message}}</p>
-        <span @click.stop.prevent="closeMessage"><i class="fa fa-times"></i></span>
+        <p v-text="message"></p>
+        <span @click="closeMessage"><i class="fa fa-times"></i></span>
     </div>
 </template>
 
@@ -12,6 +12,7 @@ import { getMessage,getMessageShow } from '../vuex/getters'
 import { showMessage,hideMessage } from '../vuex/actions'
 
 const MESSAGE_TIME = 1000
+const MESSAGE_NUMBER = 3
 
 var messageTimeout = 0
 
@@ -36,7 +37,7 @@ export default{
     watch:{
         isMessageShow(){
             if(this.isMessageShow){
-                messageTimeout = setTimeout(this.closeMessage,MESSAGE_TIME*Math.round(this.message.length/5))
+                messageTimeout = setTimeout(this.closeMessage,MESSAGE_TIME*Math.round(this.message.length/MESSAGE_NUMBER))
             }else{
                 clearTimeout(messageTimeout)
             }
@@ -48,7 +49,7 @@ export default{
         },
         messageMouseout(){
             if(this.isMessageShow){
-                messageTimeout = setTimeout(this.closeMessage,MESSAGE_TIME*Math.round(this.message.length/5))
+                messageTimeout = setTimeout(this.closeMessage,MESSAGE_TIME*Math.round(this.message.length/MESSAGE_NUMBER))
             }
         },
         closeMessage(){

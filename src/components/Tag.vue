@@ -1,109 +1,128 @@
 <template>
 	<div id="tag">
-		<div class="tag-container">
-			<div class="tag-item" :class="{'tag-active':(tag_active===$index)}" v-for="tag of tags" 
-			:style="setTagSyle(tag.weight)" @click="searchTagContent(tag.key,$index)">
-				{{tag.key}}
+		<div class="tag-items">
+			<div v-for="tag of tags" :class="setTagClass($index)" :style="setTagStyle(tag.weight)" 
+			@click="searchTag(tag.key,$index)">
+			{{tag.key}}
 			</div>
 		</div>
-		<div class="tag-content">
-		</div>  
-	</template>
+		<div class="tag-results">
+			<previews :essays="tag_essays"></previews>
+		</div>
+	</div>
+</template>
 
-	<script>
-		export default {
-			data(){
-				return{
-					tag_active:null,
-					weights:[],
-					maxWeight:null,
-					tags:[
-						{key:'ES6',weight:36},
-						{key:'node',weight:44},
-						{key:'DOM',weight:20},
-						{key:'webpack',weight:12},
-						{key:'vue',weight:33},
-						{key:'vuex',weight:6},
-						{key:'css',weight:21},
-						{key:'html',weight:16},
-						{key:'react',weight:17},
-						{key:'javascript',weight:55},
-						{key:'mongodb',weight:15},
-						{key:'mongoose',weight:12},
-						{key:'SEO',weight:6},
-						{key:'lodash',weight:4},
-						{key:'angular',weight:2},
-						{key:'weex',weight:4},
-						{key:'alibaba',weight:3},
-						{key:'tencent',weight:11},
-					],
-				}
-			},
-			ready(){
-				let that = this;
-				this.tags.map(function(value,index){
-					that.weights.push(value.weight);
-				});
-				this.maxWeight = this.getLCM(this.weights);
-			},
-			methods:{
-				//获得最大公约数
-				getLCM(arr){
-					function getBig(a,b){
-						if(a < b){
-							var temp = a;
-							a = b;
-							b = temp;
-						}
-						if(b == 0){
-							return a;
-						}
-						return getBig(b,a%b);
-					}
-					return arr.reduce(function(a,b){
-						return a*b/getBig(a,b);
-					},1);
-				},
-				setTagSyle(weight){
-					let tagStyle = {
-						order:this.maxWeight/weight
-					}
-					return tagStyle
-				},
-				searchTagContent(key,index){
-					console.log(key)
-					this.tag_active = index
-				},
+<script>
+import Previews from './Previews'
+import { getEssaysCache } from '../vuex/getters'
+import { showMessage,setEssaysCache } from '../vuex/actions'
+
+export default {
+	components:{
+		Previews
+	},
+	vuex:{
+		getters:{
+			essays_cache:getEssaysCache
+		},
+		actions:{
+			showMessage,
+			setEssaysCache
+		}
+	},
+	data(){
+		return{
+			// 当前tag
+			is_current_tag:false,
+			// tag出现频率权重数组
+			weights:[],
+			// 权重的最小公倍数
+			maxWeight:0,
+			// tag信息
+			tags:[
+				{key:'overflow',weight:44},
+				{key:'DOM',weight:20},
+				{key:'vue',weight:33},
+				{key:'vuex',weight:6},
+			],
+			// tag文章
+			tag_essays:[],
+		}
+	},
+	ready(){
+		// 设置最小公倍数
+		let that = this;
+		this.tags.map(function(value,index){
+			that.weights.push(value.weight);
+		});
+		this.maxWeight = this.UTILS.getLCM(this.weights)
+		// 获取文章并缓存
+		if(!this.essays_cache.length){
+			let url = this.CONST.PORT + '/getEssays'
+			this.$http.get(url).then((response)=>{
+				let data = response.body
+				this.setEssaysCache(data)
+			},(response)=>{
+				this.showMessage('ERROR: ' + response.status + ' ' + response.statusText)
+			})
+		}
+	},
+	methods:{
+		setTagClass(index){
+			return {
+				'tag-item':true,
+				'current-tag':this.is_current_tag === index
 			}
-		}
-	</script>
+		},
+		// 根据权重设置顺序
+		setTagStyle(weight){
+			let tagStyle = {
+				order:this.maxWeight/weight
+			}
+			return tagStyle
+		},
+		searchTag(key,index){
+			this.is_current_tag = index
+			let tag_essays = this.essays_cache.filter(function(value,index){
+				let title = value.title
+				let brief = value.brief
+				return (title.indexOf(key)>-1 || brief.indexOf(key)>-1) ? true : false
+			})
+			this.$set('tag_essays',tag_essays)
+		},
+	}
+}
+</script>
 
-	<style>
-		#tag{
-			width: 100%;
-			height: 100%;
-		}
-		.tag-container{
-			padding: 1em;
-			width: 100%;
-			display: flex;
-			flex-flow: row;
-			flex-wrap: wrap;
-			align-items: center;
-		}
-		.tag-item{
-			text-align: center;
-			font-size: 1.1em;
-			margin: .25em .2em;
-			padding: .5em 1em;
-			border: 1px solid #d2d2d2;
-			border-radius: 3px;
-			background-color: #f7f7f7;
-			transition: all .2s;
-			cursor: pointer;
-		}
-		.tag-item:hover,.tag-active{
-			color: #f7f7f7;
-			background-color: #333;
-		}
-	</style>
+<style>
+	#tag{
+		width: 100%;
+		height: 100%;
+	}
+	.tag-items{
+		padding: 1em;
+		width: 100%;
+		display: flex;
+		flex-flow: row;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+	.tag-item{
+		text-align: center;
+		font-size: 1.1em;
+		margin: .25em .2em;
+		padding: .5em 1em;
+		border: 1px solid #d2d2d2;
+		border-radius: 3px;
+		background-color: #f7f7f7;
+		transition: all .2s;
+		cursor: pointer;
+	}
+	.tag-item:hover,.current-tag{
+		color: #f7f7f7;
+		background-color: #333;
+	}
+	.tag-results{
+		padding: 0 1em;
+	}
+</style>

@@ -1,39 +1,20 @@
 <template>
-    <div id="footerarea" class="yahei-font" v-if="is_footerarea_show" :transition="footer_trans">
+    <div id="footerarea" :transition="footer_trans">
    		<p>
    			版权是我的
-   			<a href="" @click.stop.prevent="onThumb"><i class="fa fa-thumbs-o-up left-thumb"></i></a>
+   			<a href="" @click="onThumb"><i class="fa fa-thumbs-o-up left-thumb"></i></a>
    			fengshengsong
-   			<a href="" @click.stop.prevent="onThumb"><i class="fa fa-thumbs-o-up right-thumb"></i></a>
+   			<a href="" @click="onThumb"><i class="fa fa-thumbs-o-up right-thumb"></i></a>
    			{{new Date().getFullYear()}}
    		</p>
     </div>
 </template>
 
 <script>
-import { getSHARES,getFooterareaShow } from '../vuex/getters'
-import { showSidebar } from '../vuex/actions'
-
 export default {
-	vuex:{
-		getters:{
-			SHARES:getSHARES,
-			is_footerarea_show:getFooterareaShow
-		},
-		actions:{
-			showSidebar
-		}
-	},
 	data(){
 		return {
 			footer_trans:'footerMove'
-		}
-	},
-	transitions:{
-		footerMove:{
-			afterEnter(){
-				this.showSidebar()
-			}
 		}
 	},
 	methods:{

@@ -4,7 +4,7 @@
 			<div class="search-input-wrapper">
 				<input autofocus class="search-input" type="text" name="search" 
 					v-model="search_key" @keyup.enter="searchEssays(search_key)">
-				<div class="search-icon" @click.stop.prevent="searchEssays(search_key)">
+				<div class="search-icon" @click="searchEssays(search_key)">
 					<i class="iconfont">&#xe631;</i>
 				</div>					
 			</div>
@@ -13,12 +13,12 @@
 			<div class="search-result-none" v-show="is_none_result" v-text="none_res_text"></div>
 			<ul v-show="!is_none_result">
 				<li v-for="essay in search_essays">
-  					<a href="javascript:;" @click.stop.prevent="getEssay(essay.type,essay.index)" 
+  					<a href="javascript:;" @click.prevent="getEssay(essay.type,essay.index)" 
   					class="text-underline-two" v-cloak>
   						{{essay.title}}
 					</a>
 					<span class="">&nbsp;|&nbsp;&nbsp;分类于
-						<a  href="javascript:;" @click.stop.prevent="getTypeEssays(essay.type)" 
+						<a  href="javascript:;" @click.prevent="getTypeEssays(essay.type)" 
 						class="move-left" v-cloak>
 							{{essay_types.get(essay.type)}}
 						</a>
@@ -30,21 +30,17 @@
 </template>
 
 <script>
-
-import { getSHARES,getCurrentRoute,getPreviewTrans,getEssaysCache,getSearchKeyCache } from '../vuex/getters'
-import { showMessage,setEssaysCache,setSearchKeyCache } from '../vuex/actions'
+import { getEssaysCache } from '../vuex/getters'
+import { setEssaysCache,showMessage } from '../vuex/actions'
 
 export default{
 	vuex:{
 		getters:{
-			SHARES:getSHARES,
 			essays_cache:getEssaysCache,
-			search_key_cache:getSearchKeyCache,
 		},
 		actions:{
 			showMessage,
 			setEssaysCache,
-			setSearchKeyCache,
 		}
 	},
 	data(){
@@ -58,23 +54,10 @@ export default{
 		}
 	},
 	ready(){
-
-		let url = this.SHARES.PORT + '/getEssays'
-
-		this.$set('essay_types',this.SHARES.essay_types)
-
-		if(this.essays_cache.length){
-			this.$set('essays',this.essays_cache)
-		}else{
-			this.SHARES.getEssays.call(this,url,this.successCb,this.errorCb)
-		}
-	},
-	computed:{
-		key_essays(){
-			return this.essays.filter(function(value,index){
-				return value
-			})
-		},
+		let url = this.CONST.PORT + '/getEssays'
+		this.getEssays(url)
+		let essay_types = new Map([['problem','问题'],['note','读书'],['affair','日常']])
+		this.$set('essay_types',essay_types)
 	},
 	methods:{
 		searchEssays(key){
@@ -94,22 +77,24 @@ export default{
 				this.$set('search_essays',search_essays)
 			}
 		},
-		successCb(){
-			let response = Array.from(arguments)[0]
-			this.$set('essays',response.body)
+		getEssays(url){
 			if(!this.essays_cache.length){
-				this.setEssaysCache(response.body)				
+				this.$http.get(url).then((response)=>{
+					let data = response.body
+					this.$set('essays',data)
+					this.setEssaysCache(data)				
+				},(response)=>{
+					this.showMessage('ERROR: ' + response.status + ' ' + response.statusText)
+				})
+			}else{
+				this.$set('essays',this.essays_cache)
 			}
 		},
-		errorCb(){
-			let response = Array.from(arguments)[0]
-			this.showMessage('ERROR: ' + response.status + ' ' + response.statusText)
-		},
-		getEssay(type,index){
-			this.SHARES.getEssay.call(this,type,index)
-		},
 		getTypeEssays(type){
-			this.SHARES.getTypeEssays.call(this,type)
+			this.$route.router.go({path:'/blog/'+type})
+		},
+		getEssay(type,index) {
+			this.$route.router.go({path:'/blog/'+type+'/'+index})
 		},
 	}
 }
@@ -123,7 +108,6 @@ export default{
 .search-input-panel{
 	padding: 3em 4em;
 	position: relative;
-	/*background-color: pink;*/
 }
 .search-input-wrapper{
 	position: relative;
@@ -154,7 +138,6 @@ export default{
 }
 .search-result-panel{
 	padding: 1em 4em;
-	/*background-color: blue;*/
 }
 .search-result-panel ul{
 }

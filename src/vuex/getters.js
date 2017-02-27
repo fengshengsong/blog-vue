@@ -1,10 +1,19 @@
+
+// export default {
+// 	getUploadShow(state){
+// 		return state.is_upload_show
+// 	},
+// 	getMessage(state){
+// 		return state.message
+// 	}
+// }
+
 export const getMessage = (state) => state.message
 export const getMessageShow = (state) => state.is_message_show
 export const getSHARES = (state) => state.SHARES
 export const getIsAdmin = (state) => state.is_admin
 export const getIsVisitor = (state) => state.is_visitor
 export const getSimpleHeaderareaShow = (state) => state.is_simple_headerarea_show
-export const getBlured = (state) => state.is_blured
 export const getCurrentRoute = (state) => state.current_route
 export const getPreviewTrans = (state) => state.preview_trans
 export const getHeaderareaShow = (state) => state.is_headerarea_show

@@ -1,7 +1,7 @@
 <template>
-    <div id="upload" class="aaa-five-border yahei-font"  v-show="is_upload_show" :transition="upload_trans">           
+    <div id="upload" v-show="is_upload_show" :transition="upload_trans">           
         <validator name="uploadValidation">
-  		    <form @submit.prevent="submit" novalidate name="uploadform">
+  		    <form name="uploadform" novalidate>
                 <h3>上传新的文章</h3>
                 <div class="uploadTitle">
                     <label>标题</label>
@@ -11,8 +11,8 @@
                 </div>
                 <div class="uploadFile">
                     <label>文件</label>
-                    <input class="uploadFileInput" type="file" @change="onFileChange" name="uploadFile" 
-                    v-model="essay.filename" v-validate:filename="['required']" multiple="multiple" 
+                    <input class="uploadFileInput" type="file" name="uploadFile" 
+                    v-model="essay.filename" v-validate:filename="['required']"  
                     :class="{validInput:isValidFile,invalidInput:!isValidFile}" />
                 </div>
                 <div class="uploadType">
@@ -20,7 +20,7 @@
                     <select class="uploadTypeSelect" name="uploadSelect" 
                     v-model="essay.type" v-validate:type="['required']">
                         <option v-for="type in types" :value="type.value" v-text="type.text" 
-                        :selected="selected($index)"></option>
+                        ></option>
                     </select>
                 </div>
                 <div class="uploadBrief">
@@ -31,8 +31,8 @@
                     </textarea>
                 </div>
   			    <div class="uploadOptions">
-                    <input class="" type="submit" value="上传" />
-                    <input class="" type="button" value="取消" @click="cancel" />
+                    <input class="" type="button" value="上传" @click="submitUpload"/>
+                    <input class="" type="button" value="取消" @click="cancelUpload" />
                 </div>
   		    </form>
         </validator> 
@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import { showMessage,hideMessage,hideUpload,removeBlured } from '../vuex/actions'
-import { getUploadShow,getSHARES } from '../vuex/getters'
+import { showMessage,hideMessage,hideUpload } from '../vuex/actions'
+import { getUploadShow } from '../vuex/getters'
 
 export default {
     vuex:{
@@ -49,18 +49,15 @@ export default {
             showMessage,
             hideMessage,
             hideUpload,
-            removeBlured
         },
         getters:{
             is_upload_show:getUploadShow,
-            SHARES:getSHARES
         }
     },
     watch:{
         getUploadShow(value){
-            // 重置表单
             if(!value){
-                this.$el.querySelector('form').reset()
+                this.resetUpload()
             }
         }
     },
@@ -71,12 +68,15 @@ export default {
             this.isValidFile = true
         }
     },
-  	data (){
+  	data(){
         return {
+            // upload组件的transition
             upload_trans:'uploadMove',
+
             isValidTitle:false,
             isValidBrief:false,
             isValidFile:false,
+
             types:[
                 {text:'Problem',value:'problem'},
                 {text:'Note',value:'note'},
@@ -92,47 +92,37 @@ export default {
         }
     },
     methods:{
-        submit () {
+        submitUpload(){
             this.isValidTitle = this.$uploadValidation.title.required ? false : true
             this.isValidFile = this.$uploadValidation.filename.required ? false : true
             this.isValidBrief = this.$uploadValidation.brief.required ? false : true
             if(this.$uploadValidation.valid){
                 this.essay.file = document.querySelector('.uploadFileInput').files;
                 let form = document.querySelector('form')
-                // console.log(form);
                 let formData = new FormData(form)
-                // let formData = JSON.stringify(this.essay)
-                this.$http.post(this.SHARES.PORT+'/addEssay',formData)
+                this.$http.post(this.CONST.PORT+'/addEssay',formData)
                 .then((response)=>{
-                    // this.cancel()
-                    // this.showMessage(response.body)
-                    console.log(response.body)
+                    this.cancelUpload()
+                    this.showMessage(response.body)
                 }).catch((response)=>{
-                    // this.showMessage('Error: '+response.status+' '+response.statusText)
-                    this.showMessage(response)
+                    this.showMessage('Error: '+response.status+' '+response.statusText)
                 })
             }else{
                 this.showMessage('请完整填写文章上传部分！')
             }
         },
-        selected (index) {
-            return index===0?1:0;
-        },
-        cancel () {
+        cancelUpload(){
             this.hideUpload()
-            this.removeBlured()
+            this.resetUpload()
         },
-        onFileChange(e){
-            var files = e.target.files
-            // console.log(files)
+        resetUpload(){
+            this.$el.querySelector('form').reset()            
         }
     }
 }
 </script>
 
 <style scoped>
-@import url(/static/styles/initial.css);
-
 .uploadMove-transition{
     transform: scale(100%);
 }
@@ -144,6 +134,7 @@ export default {
 .uploadMove-leave{
     transform: scale(0);
 }
+
 form div{
     margin: 1em 0;
     width: 100%;

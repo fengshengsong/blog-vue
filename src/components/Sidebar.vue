@@ -1,90 +1,84 @@
 <template>
-  	<div id="sidebar" class="yahei-font" v-if="is_sidebar_show"
-  	:class="{'sidebar-in':is_sidebar_in,'sidebar-out':!is_sidebar_in}">
+  	<div id="sidebar" :class="{'sidebar-in':is_sidebar_in,'sidebar-out':!is_sidebar_in}">
 		<div class="info-panel">
-			<img class="info-panel-selfie" :src="selfie" />
-  			<p class="info-panel-intro" v-text="intro"></p>
+			<img class="info-panel-selfie" :src="self_info.selfie" />
+  			<p class="info-panel-intro" v-text="self_info.intro"></p>
   			<div class="info-panel-contact flex-row">
-  				<a href="https://github.com/fengshengsong" target="_blank"><i class="fa fa-github"></i></a>
+  				<a :href="self_info.contact" target="_blank"><i class="fa fa-github"></i></a>
   			</div>
 		</div>
 		<div class="admin-panel sidebar-panel" v-if="is_admin" :transition="admin_trans">
-			<input class="upload-btn sidebar-btn-one yahei-font" type="button" :value="upload_btn_val" @click="upload"/>
+			<input class="upload-btn sidebar-btn-one" type="button" :value="upload_btn_val" @click="upload"/>
 		</div>
 		<div class="visitor-panel sidebar-panel" v-if="is_visitor" :transition="visitor_trans">
-			<input class="getfun-btn sidebar-btn-one yahei-font" type="button" :value="getfun_btn_val" @click="getFun"/>
+			<input class="getfun-btn sidebar-btn-one" type="button" :value="getfun_btn_val" @click="getfun"/>
 		</div>
 		<div class="login-panel sidebar-panel" v-if="is_login_show" :transition="login_trans">
-			<form @submit.prevent.stop="submit">
-				<input autofocus class="login-password yahei-font" type="password" v-model="login_data.password">
+			<form @submit.prevent="submit">
+				<input autofocus class="login-password" type="password" v-model="login_data.password">
 				<div class="login-btns flex-row">
-					<input class="login-btn yahei-font" type="submit" value="Go">
-					<input class="login-btn yahei-font" type="button" value="No" @click="cancelLogin">
+					<input class="login-btn" type="submit" value="Go">
+					<input class="login-btn" type="button" value="No" @click="noLogin">
 				</div>
 			</form>
 		</div>
 		<div class="menu-panel">
-			<ul class="menu flex-column yahei-font">
+			<ul class="menu flex-column">
 				<li v-for="menu in menus" class="menu-item" 
-				:class="{'current-menu':(current_menu==$index)}" @click.prevent.stop="menuClick(menu.event,$index)">
-					<a href="####"><i class="iconfont" v-html="menu.iconfont"></i>{{menu.name}}</a>
+				:class="{'current-menu':(current_menu==$index)}" @click="menuClick(menu.event,$index)">
+					<a href="javascript:;"><i class="iconfont" v-html="menu.iconfont"></i>{{menu.name}}</a>
 				</li>
 			</ul>
 		</div>
-		<div class="arrow-panel" @click="toggleSidebar"
-		:class="{'in-sidebar':is_sidebar_in,'arrow-circle':is_arrow_circle}">
+		<div class="arrow-panel arrow-circle" @click="toggleSidebar" :class="{'in-sidebar':is_sidebar_in}">
 			<i class="iconfont arrow-icon" >&#xe60f;</i>
 		</div>
   	</div>
 </template>
 
 <script>
-import { showUpload,showMessage,showTotop,addBlured,loginAsAdmin,loginAsVisitor } from '../vuex/actions'
-import { getSHARES,getIsAdmin,getIsVisitor,getSidebarShow } from '../vuex/getters'
+import { showUpload,showMessage,loginAsAdmin,loginAsVisitor } from '../vuex/actions'
+import { getIsAdmin,getIsVisitor } from '../vuex/getters'
 
 export default {
 	vuex:{
 		getters:{
-			SHARES:getSHARES,
 			is_admin:getIsAdmin,
 			is_visitor:getIsVisitor,
-			is_sidebar_show:getSidebarShow,
 		},
 		actions:{
 			showUpload,
 			showMessage,
-			showTotop,
-			addBlured,
 			loginAsAdmin,
 			loginAsVisitor,
 		}
 	},
 	data(){
 		return {
-			menus:this.SHARES.menus,
-			selfie:'/static/images/selfie_6.jpg',
-			intro:'fengshengsong',
-			upload_btn_val:'上传文章',
-			getfun_btn_val:'GET SOME FUN',
+			menus:null,
+			self_info:{
+				selfie:'',
+				intro:'',
+				contact:'',
+			},
+			upload_btn_val:'',
+			getfun_btn_val:'',
 			login_data:{
 				password:''
 			},
 			is_user:'',
 			is_sidebar_in:true,
 			is_login_show:true,
+
 			login_wrong_num:1,
+
 			admin_trans:'fadeSwitch',
 			visitor_trans:'rightSwitch',
 			login_trans:'leftSwitch',
-			is_arrow_circle:false,
+
 			is_item_active:false,
+
 			current_menu:Number(window.localStorage.getItem('current_menu'))||0,
-		}
-	},
-	watch:{
-		is_sidebar_show(newVal,oldVal){
-			this.circleArrow()
-			this.showTotop()
 		}
 	},
 	transitions:{
@@ -99,27 +93,38 @@ export default {
 		}
 	},
 	ready(){
-		this.isAdminSave()
+		let menus = [
+			{name:'博客',iconfont:'&#xe61e;',event:'blog'},
+			{name:'标签',iconfont:'&#xe6f9;',event:'tag'},
+			{name:'测试',iconfont:'&#xe616;',event:'test'},
+			{name:'搜索',iconfont:'&#xe615;',event:'search'},
+		]
+		let self_info = {
+			selfie:'../static/images/selfie_6.jpg',
+			intro:'fengshengsong',
+			contact:'https://github.com/fengshengsong'
+		}
+		let upload_btn_val = 'Upload'
+		let getfun_btn_val = 'Try'
+		this.$set('menus',menus)
+		this.$set('self_info',self_info)
+		this.$set('upload_btn_val',upload_btn_val)
+		this.$set('getfun_btn_val',getfun_btn_val)
 	},
 	methods:{
 		toggleSidebar(){
 			this.is_sidebar_in=!this.is_sidebar_in
 		},
-		upload(){
-			this.addBlured()
-			this.showUpload()
-		},
 		submit(){
 			let login_data = JSON.stringify(this.login_data)
-			this.$http.post(this.SHARES.PORT+'/login',login_data).then((response)=>{
+			this.$http.post(this.CONST.PORT+'/login',login_data).then((response)=>{
 				if(response.body){
 					this.hideLogin()
 					this.is_user = 'admin'
-					window.sessionStorage.setItem('admin','yeah')
 				}else{
 					if(this.login_wrong_num > 4){
 						this.showMessage('不对了'+this.login_wrong_num+'次。刷新一下试试。')
-						this.cancelLogin()
+						this.noLogin()
 					}else{
 						this.showMessage('不对了'+(this.login_wrong_num++)+'次')
 					}
@@ -128,24 +133,18 @@ export default {
 				this.showMessage('Error: '+response.status+' '+response.statusText)
 			})
 		},
-		getFun(){
-			this.showMessage(this.SHARES.joke)
-		},
-		cancelLogin(){
+		noLogin(){
 			this.hideLogin()
 			this.is_user = 'visitor'
 		},
 		hideLogin(){
 			this.is_login_show = false
 		},
-		isAdminSave(){
-			if(window.sessionStorage.getItem('admin') === 'yeah'){
-				this.is_login_show = false
-				this.loginAsAdmin()
-			}
+		upload(){
+			this.showUpload()
 		},
-		circleArrow(){
-			this.is_arrow_circle = true
+		getfun(){
+			this.showMessage(this.CONST.fun)
 		},
 		menuClick(event,index){
 			this.$route.router.go({path:'/'+event})
@@ -367,12 +366,9 @@ export default {
 		transform: rotate(0);
 	}
 	to {
-		transform: rotate(720deg);
+		transform: rotate(900deg);
 	}
 }
-
-
-
 
 .fadeSwitch-transition{
   	transition: opacity .5s ease;

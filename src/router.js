@@ -13,32 +13,28 @@ router.map({
         subRoutes:{
             '/':{
                 name:'all',
-                component: require('./components/contents/All')
-            },
-            '/all':{
-                name:'all',
-                component: require('./components/contents/All')
+                component: require('./components/All')
             },
             '/problem':{
                 name: 'problem',
-                component: require('./components/contents/Problem')     
+                component: require('./components/Problem')     
             },
             '/problem/:index':{
-                component: require('./components/contents/Template')     
+                component: require('./components/Template')     
             },
             '/note':{
                 name: 'note',
-                component: require('./components/contents/Note')
+                component: require('./components/Note')
             },
             '/note/:index':{
-                component: require('./components/contents/Template')
+                component: require('./components/Template')
             },
             '/affair':{
                 name: 'affair',
-                component: require('./components/contents/Affair')
+                component: require('./components/Affair')
             },
             '/affair/:index':{
-                component: require('./components/contents/Template')
+                component: require('./components/Template')
             },
         }
     },

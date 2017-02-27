@@ -13,23 +13,6 @@ module.exports = {
 			}
 		}
 	},
-	getEssays(url,successCb,errorCb){
-		if(this.essays_cache.length){
-			this.$set('essays',this.essays_cache)
-		}else{
-			this.$http.get(url).then((response)=>{
-				successCb.call(this,response)
-			},(response)=>{
-				errorCb.call(this,response)
-			})
-		}
-	},
-	getTypeEssays(type){
-		this.$route.router.go({path:'/blog/'+type})
-	},
-	getEssay(type,index) {
-		this.$route.router.go({path:'/blog/'+type+'/'+index})
-	},
 	trim(str){ 
 		return str.replace(/(^\s*)|(\s*$)/g,""); 
 	},
