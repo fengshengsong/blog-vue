@@ -113,16 +113,12 @@ export default {
 	opacity: .6;
 }
 .expand-transition {
-	position: relative;
-	transition: all 1s ease;
+	transition: height .5s ease,opacity .5s ease;
 	height: 14em;
 	opacity: 1;
-	top: 0;
 }
 .expand-enter, .expand-leave {
 	height: 0;
-	/*top: -100px;*/
-
 	opacity: 0;
 }
 </style>

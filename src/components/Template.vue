@@ -4,7 +4,6 @@
 
 <script>
 import { showMessage } from '../vuex/actions'
-import { getSHARES } from '../vuex/getters'
 
 export default {
     vuex: {
@@ -12,7 +11,6 @@ export default {
             showMessage
         },
         getters: {
-            SHARES: getSHARES
         }
     },
     data () {
@@ -24,11 +22,11 @@ export default {
         this.getEssay(this.$route.params.index)
     },
     methods: {
-        getEssay (index) { 
-            this.$http.get(this.SHARES.PORT+'/getEssay?index='+index).then((response)=>{
+        getEssay(index){ 
+            this.$http.get(this.CONST.PORT+'/getEssay?index='+index).then((response)=>{
                 this.$set('essay',response.body)
             },(response)=>{
-                this.showMessage('获取文章错误！')
+                this.showMessage('读取文章出现了点问题，请刷新一下试试。')
             })
         }
     }

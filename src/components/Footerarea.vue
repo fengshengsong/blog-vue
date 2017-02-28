@@ -38,7 +38,7 @@ export default {
 }
 @media screen and (max-width: 1000px){
     #footerarea{
-    	display: none;
+
     }
 }
 #footerarea{
@@ -47,7 +47,7 @@ export default {
     bottom: 0;
     text-align: center;
     opacity: .8;
-    padding: 1em;
+    padding: 1em 0;
     margin-top: 1em;
 }
 #footerarea a{
