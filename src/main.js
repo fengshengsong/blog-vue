@@ -12,12 +12,6 @@ Vue.use(VueResource)
 Vue.use(VueValidator)
 Vue.use(GIN)
 
-// Vue.http.interceptors.push((request, next) => {
-// 	next((response) => {
-// 		return response
-// 	});
-// })
-
 router.start(App,'app')
 
 new Vue({

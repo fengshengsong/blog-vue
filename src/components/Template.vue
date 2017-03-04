@@ -10,10 +10,8 @@ export default {
         actions:{
             showMessage
         },
-        getters: {
-        }
     },
-    data () {
+    data(){
         return {
             essay:''
         }

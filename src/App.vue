@@ -4,6 +4,7 @@
 		<container></container>
 		<message></message>
 		<totop></totop>
+		<loading></loading>
 	</div>
 </template>
 
@@ -12,15 +13,16 @@ import Container from './components/Container'
 import Message from './components/Message'
 import Sidebar from './components/Sidebar'
 import Totop from './components/Totop'
+import Loading from './components/Loading'
 import store from './vuex/store'
 
 export default {
 	store,
 	components:{
-		Container,Message,Sidebar,Totop
+		Container,Message,Sidebar,Totop,Loading
 	},
 	ready(){
-	},
+	}
 }
 </script>
 
