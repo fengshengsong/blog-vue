@@ -69,5 +69,8 @@ export default {
 	},
 	SET_SEARCH_KEY_CACHE(state,cache){
 		state.search_key_cache = cache
+	},
+	HIDE_LOADING(state){
+		state.is_loading_show = false
 	}
 }

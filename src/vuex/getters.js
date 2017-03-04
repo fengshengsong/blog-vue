@@ -27,4 +27,5 @@ export const getTotopIn = (state) => state.is_totop_in
 export const getUploadShow = (state) => state.is_upload_show
 export const getEssaysCache = (state) => state.essays_cache
 export const getSearchKeyCache = (state) => state.search_key_cache
+export const getLoadingShow = (state) => state.is_loading_show
 

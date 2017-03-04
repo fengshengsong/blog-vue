@@ -1,25 +1,19 @@
 <template>
 	<div id="app">
-		<sidebar></sidebar>        
-		<container></container>
-		<message></message>
-		<totop></totop>
+		<wrapper></wrapper>
 		<loading></loading>
 	</div>
 </template>
 
 <script>
-import Container from './components/Container'
-import Message from './components/Message'
-import Sidebar from './components/Sidebar'
-import Totop from './components/Totop'
+import Wrapper from './components/Wrapper'
 import Loading from './components/Loading'
 import store from './vuex/store'
 
 export default {
 	store,
 	components:{
-		Container,Message,Sidebar,Totop,Loading
+		Wrapper,Loading
 	},
 	ready(){
 	}

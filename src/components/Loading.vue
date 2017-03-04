@@ -1,5 +1,5 @@
 <template>
-	<div id="loading" v-if="if_loading_show" :transition="loading_trans">
+	<div id="loading" v-if="is_loading_show" :transition="loading_trans">
 		<div class="loading-content">
 			<div class="loading-item"></div>
 			<div class="loading-item"></div>
@@ -10,11 +10,17 @@
 </template>
 
 <script>
+import { getLoadingShow } from '../vuex/getters'
+
 export default {
 	data(){
 		return {
-			if_loading_show:true,
 			loading_trans:'fadeMove'
+		}
+	},
+	vuex:{
+		getters:{
+			is_loading_show:getLoadingShow
 		}
 	},
 	transitions:{
@@ -24,10 +30,6 @@ export default {
 		}
 	},
 	ready(){
-		let that = this;
-		setTimeout(function(){
-			that.if_loading_show = false;
-		},2000)
 	}
 }
 </script>

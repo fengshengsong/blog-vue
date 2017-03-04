@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App'
+import Loading from './components/Loading'
 import $ from 'jquery'
 import router from './router'
 import VueResource from 'vue-resource'

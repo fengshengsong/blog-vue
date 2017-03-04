@@ -1,16 +1,14 @@
 //放置初始状态
-import SHARES from '../static/javascripts/SHARES.js'
 
 export default {	
 	is_admin:false,
 	is_visitor:false,
 	
 	message:'',
-	
-	SHARES,
 	current_route:0,
 	preview_trans:'leftMove',
 
+	is_loading_show:true,
 	is_headerarea_in:true,
 	is_headerarea_show:false,
 	is_simple_headerarea_show:false,
