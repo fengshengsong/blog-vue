@@ -41,7 +41,7 @@ export default {
 	height: 100%;
 	top: 0;
 	left: 0;
-	background-color: #fff;
+	background-color: rgba(255,255,255,.3);
 	z-index: 1000;
 }
 .loading-content{
