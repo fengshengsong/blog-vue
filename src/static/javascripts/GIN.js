@@ -2,8 +2,8 @@
 const GIN = {
 	install(Vue,GIN_OPTIONS){
 		Vue.prototype.CONST = {
-			// PORT:'http://xiaoyin.net.cn:3000',
-			PORT:'http://localhost:3000',
+			PORT:'http://xiaoyin.net.cn:3000',
+			// PORT:'http://localhost:3000',
 			categories:[
 				{name:'All',path:''},
 				{name:'问题',path:'/problem'},

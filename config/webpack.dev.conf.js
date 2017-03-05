@@ -53,8 +53,8 @@ var devWebpackConfig = {
 		new HtmlWebpackPlugin({
 			template: projectRoot+"/src/index.html",
 		}),
-        // new webpack.HotModuleReplacementPlugin(),
-		// new ExtractTextPlugin('[name].dev.css'),
+        new webpack.HotModuleReplacementPlugin(),
+		new ExtractTextPlugin('[name].dev.css'),
 		new webpack.BannerPlugin('This file is created by fengshengsong.')
 	],
     devServer: {
