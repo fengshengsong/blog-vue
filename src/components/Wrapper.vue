@@ -12,7 +12,6 @@ import Container from './Container'
 import Message from './Message'
 import Sidebar from './Sidebar'
 import Totop from './Totop'
-
 import { hideLoading } from '../vuex/actions'
 
 export default {

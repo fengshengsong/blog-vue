@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
+		<!-- <loading></loading> -->
 		<wrapper></wrapper>
-		<loading></loading>
 	</div>
 </template>
 
@@ -13,9 +13,11 @@ import store from './vuex/store'
 export default {
 	store,
 	components:{
-		Wrapper,Loading
+		Loading,Wrapper
 	},
+
 	ready(){
+
 	}
 }
 </script>
