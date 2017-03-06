@@ -3,28 +3,15 @@
 		<div class="search-input-panel">
 			<div class="search-input-wrapper">
 				<input autofocus class="search-input" type="text" name="search" 
-					v-model="search_key" @keyup.enter="searchEssays(search_key)">
-				<div class="search-icon" @click="searchEssays(search_key)">
+					v-model="search_key" @keyup.enter="keySearch(search_key)" />
+				<div class="search-icon" @click="keySearch(search_key)">
 					<i class="iconfont">&#xe631;</i>
 				</div>					
 			</div>
 		</div>
 		<div class="search-result-panel">
 			<div class="search-result-none" v-show="is_none_result" v-text="none_res_text"></div>
-			<ul v-show="!is_none_result">
-				<li v-for="essay in search_essays">
-  					<a href="javascript:;" @click.prevent="getEssay(essay.type,essay.index)" 
-  					class="text-underline-two" v-cloak>
-  						{{essay.title}}
-					</a>
-					<span class="">&nbsp;|&nbsp;&nbsp;分类于
-						<a  href="javascript:;" @click.prevent="getTypeEssays(essay.type)" 
-						class="move-left" v-cloak>
-							{{essay_types.get(essay.type)}}
-						</a>
-					</span>					
-				</li>
-			</ul>
+			<previews :essays="search_essays" v-show="!is_none_result"></previews>
 		</div>
 	</div>
 </template>
@@ -32,8 +19,12 @@
 <script>
 import { getEssaysCache } from '../vuex/getters'
 import { setEssaysCache,showMessage } from '../vuex/actions'
+import Previews from './Previews'
 
 export default{
+	components:{
+		Previews
+	},
 	vuex:{
 		getters:{
 			essays_cache:getEssaysCache,
@@ -48,54 +39,30 @@ export default{
 			is_none_result:false,
 			none_res_text:'未搜索到符合要求的内容',
 			search_key:'',
-			essays:[],
 			search_essays:[],
-			essay_types:[]
 		}
 	},
 	ready(){
-		let url = this.CONST.PORT + '/getEssays'
-		this.getEssays(url)
-		let essay_types = new Map([['problem','问题'],['note','读书'],['affair','日常']])
-		this.$set('essay_types',essay_types)
+		let url = this.CONST.PORT + '/getEssays';
+		if(!this.essays_cache.length){
+			this.$http.get(url).then((response)=>{
+				let data = response.body;
+				this.setEssaysCache(data);
+			},(response)=>{
+				this.showMessage('ERROR: ' + response.status + ' ' + response.statusText);
+			})
+		}	
 	},
 	methods:{
-		searchEssays(key){
-			let trim_key = String.trim(key)
-			if(trim_key === ''){
-				return
-			}
-			let search_essays = this.essays.filter(function(value,index){
-				if(value.title.toString().toLowerCase().indexOf(trim_key) > -1){
-					return value
-				}
-			})
-			if(!search_essays.length){
-				this.is_none_result = true
-			}else{
-				this.is_none_result = false
-				this.$set('search_essays',search_essays)
-			}
-		},
-		getEssays(url){
-			if(!this.essays_cache.length){
-				this.$http.get(url).then((response)=>{
-					let data = response.body
-					this.$set('essays',data)
-					this.setEssaysCache(data)				
-				},(response)=>{
-					this.showMessage('ERROR: ' + response.status + ' ' + response.statusText)
-				})
-			}else{
-				this.$set('essays',this.essays_cache)
-			}
-		},
-		getTypeEssays(type){
-			this.$route.router.go({path:'/blog/'+type})
-		},
-		getEssay(type,index) {
-			this.$route.router.go({path:'/blog/'+type+'/'+index})
-		},
+		keySearch(key){
+			let trim_key = String.trim(key);
+			if(trim_key === '') return;
+			let search_essays = this.essays_cache.filter(function(value,index){
+				return value.title.toString().toLowerCase().indexOf(trim_key) > -1 ? true : false;
+			});
+			this.is_none_result = search_essays.length ? false : true;
+			this.$set('search_essays',search_essays)
+		}
 	}
 }
 </script>
@@ -139,29 +106,14 @@ export default{
 .search-result-panel{
 	padding: 1em 4em;
 }
-.search-result-panel ul{
-}
-.search-result-panel li{
-	padding: .5em 1em;
-	margin: .5em;
+.search-result-none{
+	text-align: center;
 	font-size: 1.3em;
+	width: 100%;
+	padding-top: 5em;
 }
-.search-result-panel a{
-	position: relative;
-}
-.search-result-panel a:hover{
-	text-decoration: none;
-}
-.move-left{
-	left: 0;
-	transition: left .2s;
-}
-.move-left:hover{
-	left: .2em;
-}
-.text-underline-one{
 
-}
+
 .text-underline-one:after{
     content: "";
     position: absolute;
@@ -177,7 +129,6 @@ export default{
     left: 0;
     right: 0;
 }
-
 .text-underline-two:after{
     content: "";
     position: absolute;
@@ -191,13 +142,5 @@ export default{
 }
 .text-underline-two:hover:after{
 	transform: scaleX(1);
-}
-
-
-.search-result-none{
-	text-align: center;
-	font-size: 1.3em;
-	width: 100%;
-	padding-top: 5em;
 }
 </style>

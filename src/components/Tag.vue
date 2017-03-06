@@ -1,7 +1,7 @@
 <template>
 	<div id="tag">
 		<div class="tag-items">
-			<div v-for="tag of tags" :class="setTagClass($index)" :style="setTagStyle(tag.weight)" 
+			<div v-for="tag of tags" :class="getTagClass($index)" :style="getTagStyle(tag.weight)" 
 			@click="searchTag(tag.key,$index)">
 			{{tag.key}}
 			</div>
@@ -13,85 +13,84 @@
 </template>
 
 <script>
-import Previews from './Previews'
-import { getEssaysCache } from '../vuex/getters'
-import { showMessage,setEssaysCache } from '../vuex/actions'
+	import Previews from './Previews'
+	import { getEssaysCache } from '../vuex/getters'
+	import { setEssaysCache,showMessage } from '../vuex/actions'
 
-export default {
-	components:{
-		Previews
-	},
-	vuex:{
-		getters:{
-			essays_cache:getEssaysCache
+	export default {
+		components:{
+			Previews
 		},
-		actions:{
-			showMessage,
-			setEssaysCache
-		}
-	},
-	data(){
-		return{
-			// 当前tag
-			is_current_tag:false,
-			// tag出现频率权重数组
-			weights:[],
-			// 权重的最小公倍数
-			maxWeight:0,
-			// tag信息
-			tags:[
-				{key:'overflow',weight:44},
-				{key:'DOM',weight:20},
-				{key:'vue',weight:33},
-				{key:'vuex',weight:6},
-			],
-			// tag文章
-			tag_essays:[],
-		}
-	},
-	ready(){
-		// 设置最小公倍数
-		let that = this;
-		this.tags.map(function(value,index){
-			that.weights.push(value.weight);
-		});
-		this.maxWeight = this.UTILS.getLCM(this.weights)
-		// 获取文章并缓存
-		if(!this.essays_cache.length){
-			let url = this.CONST.PORT + '/getEssays'
-			this.$http.get(url).then((response)=>{
-				let data = response.body
-				this.setEssaysCache(data)
-			},(response)=>{
-				this.showMessage('ERROR: ' + response.status + ' ' + response.statusText)
-			})
-		}
-	},
-	methods:{
-		setTagClass(index){
-			return {
-				'tag-item':true,
-				'current-tag':this.is_current_tag === index
+		vuex:{
+			getters:{
+				essays_cache:getEssaysCache
+			},
+			actions:{
+				showMessage,
+				setEssaysCache
 			}
 		},
-		// 根据权重设置顺序
-		setTagStyle(weight){
-			let tagStyle = {
-				order:this.maxWeight/weight
+		data(){
+			return{
+				is_current_tag:false,
+				// tag出现频率权重数组
+				weights:[],
+				// 权重的最小公倍数
+				maxWeight:0,
+				tags:[
+					{key:'JavaScript',weight:44},
+					{key:'DOM',weight:10},
+					{key:'vue',weight:33},
+					{key:'ajax',weight:24},
+					{key:'异步',weight:22},
+				],
+				tag_essays:[],
 			}
-			return tagStyle
 		},
-		searchTag(key,index){
-			this.is_current_tag = index
-			let tag_essays = this.essays_cache.filter(function(value,index){
-				let title = value.title
-				let brief = value.brief
-				return (title.indexOf(key)>-1 || brief.indexOf(key)>-1) ? true : false
-			})
-			this.$set('tag_essays',tag_essays)
+		ready(){
+			// 设置最小公倍数
+			let that = this;
+			this.tags.map(function(value,index){
+				that.weights.push(value.weight);
+			});
+			this.maxWeight = this.UTILS.getLCM(this.weights);
+			// 获取文章并缓存
+			if(!this.essays_cache.length){
+				let url = this.CONST.PORT + '/getEssays';
+				this.$http.get(url).then((response)=>{
+					let data = response.body;
+					this.setEssaysCache(data);
+				},(response)=>{
+					this.showMessage('ERROR: ' + response.status + ' ' + response.statusText);
+				})
+			}
 		},
+		methods:{
+			getTagClass(index){
+				return {
+					'tag-item':true,
+					'current-tag':this.is_current_tag === index
+				}
+			},
+			// 根据权重设置顺序
+			getTagStyle(weight){
+				let tagStyle = {
+					order:this.maxWeight/weight
+				};
+				return tagStyle;
+			},
+			searchTag(key,index){
+				this.is_current_tag = index;
+				let tag_essays = this.essays_cache.filter(function(value,index){
+					let title = value.title;
+					let brief = value.brief;
+					return (title.indexOf(key)>-1 || brief.indexOf(key)>-1) 
+						? true : false;
+				})
+				this.$set('tag_essays',tag_essays);
+			},
+		}
 	}
-}
 </script>
 
 <style>

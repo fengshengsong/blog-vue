@@ -17,11 +17,11 @@ var prodWebpackConfig = merge(baseWebpackConfig, {
 		loaders:[
             { 
                 test: /\.css$/, 
-                loader: ExtractTextPlugin.extract('style','css!postcss')
-            },
+				loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader')          
+			},
             { 
                 test: /\.scss$/, 
-                loader: ExtractTextPlugin.extract('style','css!sass')
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!sass-loader')
             },
         ]
 	},
@@ -35,8 +35,8 @@ var prodWebpackConfig = merge(baseWebpackConfig, {
             browsers: ['last 3 versions', '> 1%']
         },
         loaders: {
-            sass: ExtractTextPlugin.extract('style','css!autoprefixer!sass'),
-            css: ExtractTextPlugin.extract('vue-style','css','sass'),
+            css: ExtractTextPlugin.extract('vue-style-loader','css-loader'),
+            scss: ExtractTextPlugin.extract('vue-style-loader','css-loader!sass-loader'),
             js: 'babel'
         }
     },

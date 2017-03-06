@@ -10,6 +10,7 @@ const GIN = {
 				{name:'读书',path:'/note'},
 				{name:'日常',path:'/affair'},
 			],
+			essay_types:new Map([['problem','问题'],['note','读书'],['affair','日常']]),
 			fun:'哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',			
 		},
 		Vue.prototype.UTILS = {

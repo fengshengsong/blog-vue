@@ -8,8 +8,8 @@
     "dev": "webpack-dev-server --inline --hot --config ./config/webpack.dev.conf.js",
     "build": "webpack --config ./config/webpack.prod.conf.js --colors --progress",
     "test": "gulp webpack:dev-server"
-},
-"dependencies": {
+  },
+  "dependencies": {
     "babel-runtime": "^6.0.0",
     "jquery": "^3.1.1",
     "vue": "^1.0.21",
@@ -17,8 +17,8 @@
     "vue-resource": "^1.0.3",
     "vue-validator": "^2.1.7",
     "vuex": "^1.0.0"
-},
-"devDependencies": {
+  },
+  "devDependencies": {
     "autoprefixer": "^6.5.3",
     "babel": "^6.5.2",
     "babel-core": "^6.0.0",
@@ -44,7 +44,7 @@
     "http-proxy-middleware": "^0.12.0",
     "jquery": "^3.1.1",
     "json-loader": "^0.5.4",
-    "node-sass": "^3.13.0",
+    "node-sass": "^4.5.0",
     "ora": "^0.2.0",
     "sass-loader": "^4.0.2",
     "shelljs": "^0.6.0",
@@ -61,14 +61,14 @@
     "webpack-dev-server": "^1.16.2",
     "webpack-hot-middleware": "^2.6.0",
     "webpack-merge": "^0.8.3"
-},
-"repository": {
+  },
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/fengshengsong/blog-vue.git"
-},
-"license": "ISC",
-"bugs": {
+  },
+  "license": "ISC",
+  "bugs": {
     "url": "https://github.com/fengshengsong/blog-vue/issues"
-},
-"homepage": "https://github.com/fengshengsong/blog-vue#readme"
+  },
+  "homepage": "https://github.com/fengshengsong/blog-vue#readme"
 }

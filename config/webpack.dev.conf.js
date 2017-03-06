@@ -20,11 +20,11 @@ var devWebpackConfig = {
 		loaders:[
             { 
                 test: /\.css$/, 
-                loader: ExtractTextPlugin.extract('style','css!postcss')
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader')
             },
             { 
                 test: /\.scss$/, 
-                loader: ExtractTextPlugin.extract('style','css!sass')
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!sass-loader')
             },
         ]
 	},
@@ -38,8 +38,8 @@ var devWebpackConfig = {
             browsers: ['last 3 versions', '> 1%']
         },
         loaders: {
-            sass: ExtractTextPlugin.extract('style','css!autoprefixer!sass'),
-            css: ExtractTextPlugin.extract('vue-style','css','sass'),
+            css: ExtractTextPlugin.extract('vue-style-loader','css-loader'),
+            scss: ExtractTextPlugin.extract('vue-style-loader','css-loader!sass-loader'),
             js: 'babel'
         }
     },
@@ -53,7 +53,7 @@ var devWebpackConfig = {
 		new HtmlWebpackPlugin({
 			template: projectRoot+"/src/index.html",
 		}),
-        new webpack.HotModuleReplacementPlugin(),
+        // new webpack.HotModuleReplacementPlugin(),
 		new ExtractTextPlugin('[name].dev.css'),
 		new webpack.BannerPlugin('This file is created by fengshengsong.')
 	],

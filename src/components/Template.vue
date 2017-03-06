@@ -1,113 +1,85 @@
 <template>
-  	<div class="templ" v-html="essay"></div>
+	<div class="templ" v-html="essay"></div>
 </template>
 
 <script>
-import { showMessage } from '../vuex/actions'
+	import { showMessage } from '../vuex/actions'
 
-export default {
-    vuex: {
-        actions:{
-            showMessage
-        },
-    },
-    data(){
-        return {
-            essay:''
-        }
-    },
-    ready () {
-        this.getEssay(this.$route.params.index)
-    },
-    methods: {
-        getEssay(index){ 
-            this.$http.get(this.CONST.PORT+'/getEssay?index='+index).then((response)=>{
-                this.$set('essay',response.body)
-            },(response)=>{
-                this.showMessage('读取文章出现了点问题，请刷新一下试试。')
-            })
-        }
-    }
-}
+	export default {
+		vuex: {
+			actions:{
+				showMessage
+			},
+		},
+		data(){
+			return {
+				essay:''
+			}
+		},
+		ready(){
+			this.getEssay(this.$route.params.index);
+		},
+		methods: {
+			getEssay(index){ 
+				this.$http.get(this.CONST.PORT+'/getEssay?index='+index).then((response)=>{
+					this.$set('essay',response.body);
+				},(response)=>{
+					this.showMessage('读取文章出现了点问题，请刷新一下试试。');
+				})
+			}
+		}
+	}
 </script>
 
-<style>
+<style lang="scss">
 .templ {
-  width: 92%;
-  margin: auto;
-  font-size: 110%;
-}
-.templ h1 {
-  font-size: 180%;
-  color: #555;
-  height: 2em;
-  line-height: 2em;
-  margin-bottom: .9em;
-  font-weight: bold;
-  border-bottom: 5px solid #3B5998;
-}
-.templ h2 {
-  text-indent: .5em;
-  margin: 1em 0;
-  font-size: 160%;
-  color: #000;
-}
-.templ h3 {
-  text-indent: 1em;
-  color: #3B5998;
-  font-size: 140%;
-}
-.templ h4 {
-  text-indent: 1em;
-  color: #3B5998;
-  font-size: 120%;
-}
-.templ h5 {
-  text-indent: 1em;
-  color: #3B5998;
-  font-size: 100%;
-}
-.templ h6 {
-  text-indent: 1em;
-  color: #3B5998;
-  font-size: 80%;
-}
-.templ p {
-  margin: 1em 0;
-  line-height: 1.7;
-}
-.templ p code {
-  background: #f5f5f5;
-  padding: .1em .5em;
-  border-radius: .3em;
-  font-family:'微软雅黑','黑体';
-}
-.templ blockquote {
-  width: 90%;
-  padding: 0.3em 0.9em;
-  background: #eee;
-  border-left: 5px solid rgb(255, 128, 0);
-  margin: 2em 0;
-  margin: inherit;
-}
-.templ blockquote p {
-  margin: 1em 0;
-}
-.templ pre {
-  width: 90%;
-  max-height: 600px;
-  background: #f5f5f5;
-  padding: 1.4em;
-  overflow-x: auto;
-  margin: inherit;
-  font-family:'微软雅黑','黑体';
-  border-radius: 5px;
-}
-.templ pre code{
-    font-family: consolas, Menlo, "PingFang SC", "Microsoft YaHei", monospace;
-}
-.templ ul {
-  margin-left: 2em;
-  padding: 0.9em;
+	width: 90%;
+	margin: 0 auto;
+	h1 {
+		color: #222;
+		padding: 1em 0; 
+		font-size: 2em;
+		font-weight: bold;
+		border-bottom: 5px solid #222;
+	}
+	h2 {
+		padding: 1em 0;
+		font-size: 1.8em;
+		color: #222;
+	}
+	h3 {
+		padding-top: .5em;
+		color: #333;
+		font-size: 1.4em;
+	}
+	h4 {
+		padding-top: 1em;
+		color: #444;
+		font-size: 1.2em;
+	}
+	p {
+		padding: 1em 0;
+	}
+	pre {
+		padding: 1em;
+		background: #E8E8E8;
+		border-radius: 3px;
+		max-height: 800px;
+		max-width: 800px;
+	}
+	pre code {
+		font-family: consolas, Menlo, "PingFang SC", "Microsoft YaHei", monospace;
+	}
+	blockquote {
+		margin: 1em .5em;
+		background: #f0f0f0;
+		border-left: 5px solid #222;
+		p {
+			padding: .5em 1em;
+		}
+	}
+	ul {
+		list-style: none;
+	}
 }
 </style>
