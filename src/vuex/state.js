@@ -1,7 +1,7 @@
 //放置初始状态
 
 export default {	
-	current_component:'Loading',
+	current_component:'',
 	is_admin:false,
 	is_visitor:false,
 	

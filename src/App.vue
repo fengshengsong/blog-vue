@@ -1,12 +1,12 @@
 <template>
 	<div id="app">
+		<Loading></Loading>
 		<component :is="current_component" keep-alive></component>
 	</div>
 </template>
 
 <script>
 import store from './vuex/store'
-import { changeCurrentComponent } from './vuex/actions'
 import { getCurrentComponent } from './vuex/getters'
 
 export default {
@@ -14,9 +14,6 @@ export default {
 	vuex:{
 		getters:{
 			current_component:getCurrentComponent
-		},
-		actions:{
-			changeCurrentComponent
 		}
 	},
 	data(){

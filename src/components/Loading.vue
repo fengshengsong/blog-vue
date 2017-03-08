@@ -1,5 +1,5 @@
 <template>
-	<div id="loading" v-if="is_loading_show" :transition="loading_trans">
+	<div id="loading" v-show="is_loading_show" :transition="loading_trans">
 		<div class="loading-content">
 			<div class="loading-item"></div>
 			<div class="loading-item"></div>
@@ -11,7 +11,7 @@
 
 <script>
 import { getLoadingShow,getCurrentComponent } from '../vuex/getters'
-import { changeCurrentComponent } from '../vuex/actions'
+import { setCurrentComponent } from '../vuex/actions'
 
 export default {
 	data(){
@@ -25,13 +25,13 @@ export default {
 			current_component:getCurrentComponent
 		},
 		actions:{
-			changeCurrentComponent
+			setCurrentComponent
 		}
 	},
 	ready(){
 		let that = this;
 		setTimeout(function(){
-			that.changeCurrentComponent('Wrapper');
+			that.setCurrentComponent('Wrapper');
 		},1000);
 	}
 }
@@ -55,7 +55,7 @@ export default {
 	@extend %absolutePos;
 	width:100%;
 	height:100%;
-	background-color: rgba(255,255,255,.3);
+	background-color: rgba(255,255,255,1);
 	z-index: 1000;
 }
 .loading-content{
