@@ -1,23 +1,37 @@
 <template>
 	<div id="app">
-		<!-- <loading></loading> -->
-		<wrapper></wrapper>
+		<component :is="current_component" keep-alive></component>
 	</div>
 </template>
 
 <script>
-import Wrapper from './components/Wrapper'
-import Loading from './components/Loading'
 import store from './vuex/store'
+import { changeCurrentComponent } from './vuex/actions'
+import { getCurrentComponent } from './vuex/getters'
 
 export default {
 	store,
-	components:{
-		Loading,Wrapper
+	vuex:{
+		getters:{
+			current_component:getCurrentComponent
+		},
+		actions:{
+			changeCurrentComponent
+		}
 	},
-
+	data(){
+		return {
+		}
+	},
+	components:{
+		Loading:function(resolve){
+			require(['./components/Loading'],resolve)
+		},
+		Wrapper:function(resolve){
+			require(['./components/Wrapper'],resolve)
+		},
+	},
 	ready(){
-
 	}
 }
 </script>

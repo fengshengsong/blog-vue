@@ -100,7 +100,7 @@ export default {
 			{name:'搜索',iconfont:'&#xe615;',event:'search'},
 		]
 		let self_info = {
-			selfie:'../static/images/selfie_6.jpg',
+			selfie:'/static/images/selfie_6.jpg',
 			intro:'fengshengsong',
 			contact:'https://github.com/fengshengsong'
 		}

@@ -20,3 +20,5 @@ export const toggleTotop = ({dispatch},value) => dispatch('TOGGLE_TOTOP',value)
 export const setEssaysCache = ({dispatch},array) => dispatch('SET_ESSAYS_CACHE',array)
 export const setSearchKeyCache = ({dispatch},cache) => dispatch('SET_SEARCH_KEY_CACHE',cache)
 export const hideLoading = ({dispatch}) => dispatch('HIDE_LOADING')
+export const changeCurrentComponent = ({dispatch},component) => dispatch('CHANGE_CURRENT_COMPONENT',component)
+

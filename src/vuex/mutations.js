@@ -1,5 +1,8 @@
 //放置状态变更函数
 export default {
+	CHANGE_CURRENT_COMPONENT(state,component='Loading'){
+		state.current_component = component
+	},
 	SHOW_MESSAGE(state,message='No Message!'){
 		state.message = message
 		state.is_message_show = true

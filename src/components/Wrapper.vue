@@ -24,10 +24,10 @@ export default {
 		}
 	},
 	ready(){
-		// let that = this;
-		// setTimeout(function(){
-		// 	that.hideLoading();
-		// },2000);
+		let that = this;
+		setTimeout(function(){
+			that.hideLoading();
+		},1000);
 	}
 }
 </script>
